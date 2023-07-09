@@ -2,10 +2,11 @@ import fs from "fs/promises";
 import path from "path";
 import { nanoid } from "nanoid";
 
-const contactsPath = path.resolve("contacts", "contacts.json");
+const contactsPath = path.resolve("db", "contacts.json");
 
-const updateContacts = (contacts) =>
-  fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+const updateContacts = async (contacts) => {
+  return await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+};
 
 export const listContacts = async () => {
   const data = await fs.readFile(contactsPath);
@@ -20,7 +21,7 @@ export const getContactById = async (id) => {
 
 export const removeContact = async (id) => {
   const contacts = await listContacts();
-  const index = contacts.findIndex((item) => item.id === id);
+  const index = contacts.findIndex((contact) => contact.id === id);
   if (index === -1) {
     return null;
   }
